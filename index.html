@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <title>SFLventory</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/sfl-module.css">
+    <!-- Utilisation de l'icône sunflower existante -->
+    <link rel="icon" href="images/sunflower-icon.png">
+    <!-- Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Date-fns pour la manipulation des dates -->
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>SFLventory</h1>
+        </div>
+        <div class="controls-container">
+            <div class="farm-selection">
+                <select id="farm-selector">
+                    <option value="">Choose a farm...</option>
+                    <!-- Options will be added dynamically via JavaScript -->
+                </select>
+            </div>
+            <div class="date-range">
+                <select id="date-range-selector">
+                    <option value="7">Last 7 days</option>
+                    <option value="30" selected>Last 30 days</option>
+                    <option value="180">Last 6 months</option>
+                    <option value="365">Last year</option>
+                    <option value="custom">Custom period</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls-panel" style="display: none;">
+        <div class="custom-date-range" id="custom-date-container" style="display: none;">
+            <label for="start-date">From:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">To:</label>
+            <input type="date" id="end-date">
+            <button id="apply-custom-date">Apply</button>
+        </div>
+    </div>
+
+    <main class="content-area">
+        <div class="sidebar">
+            <div class="search-container">
+                <input type="text" id="item-search" placeholder="Search for an item...">
+                <div class="select-actions">
+                    <label class="select-all-label">
+                        <input type="checkbox" id="select-all">
+                    </label>
+                </div>
+            </div>
+            <div class="item-list-container">
+                <div id="item-list">
+                    <!-- Inventory items will be added dynamically here -->
+                </div>
+            </div>
+        </div>
+        <div class="chart-section">
+            <div class="chart-container">
+                <canvas id="inventory-chart"></canvas>
+            </div>
+            <div class="statistics-container">
+                <!-- The "Statistics" title has been removed -->
+                <div id="statistics-content">
+                    <!-- Statistics will be added dynamically here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="sfl-module" class="sfl-container">
+        <button id="connectButton">Connect MetaMask</button>
+        <div id="status" class="sfl-message"></div>
+        <div id="tokenInfo" class="sfl-token-info"></div>
+        <div id="walletAddress" class="sfl-wallet-info"></div>
+    </div>
+
+    <footer>
+        <p>© 2025 SFLventory</p>
+    </footer>
+
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/dataManager.js"></script>
+    <script src="js/chartManager.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/sfl-module.js"></script>
+</body>
+</html>
