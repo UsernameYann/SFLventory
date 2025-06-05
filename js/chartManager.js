@@ -188,13 +188,13 @@ class ChartManager {
                     const pattern = ctx.createPattern(patternCanvas, 'repeat');
                     ctx.fillStyle = pattern;
                     
-                    // Draw event rectangle with pattern
-                    ctx.fillRect(xPos - dayWidth/2, top, dayWidth, height);
+                    // Draw event rectangle with pattern - position exacte
+                    ctx.fillRect(xPos, top, dayWidth, height);
                     
                     // Add a border to help visibility
                     ctx.strokeStyle = eventColor;
                     ctx.lineWidth = 1;
-                    ctx.strokeRect(xPos - dayWidth/2, top, dayWidth, height);
+                    ctx.strokeRect(xPos, top, dayWidth, height);
                     
                     ctx.restore();
                 }
