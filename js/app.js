@@ -30,11 +30,21 @@ class App {
             // Load data manifest
             await dataManager.loadManifest();
             
-            // Populate farm selector
-            this.populateFarmSelector();
-            
-            // Display welcome message
-            this.displayWelcomeMessage();
+            // Directly select the single farm (219328)
+            const farmId = '219328';
+            await dataManager.selectFarm(farmId);
+            dataManager.selectedFarm = farmId;
+            // Populate item list for this farm
+            this.populateItemList();
+            // Initialize custom dates inputs
+            this.initializeCustomDateInputs();
+            // Display farm welcome
+            const farmInfo = {
+                farmId,
+                username: dataManager.manifest.farms[farmId].username,
+                mostRecentDate: [...dataManager.manifest.farms[farmId].available_dates].sort().reverse()[0]
+            };
+            this.displayFarmWelcome(farmInfo);
         } catch (error) {
             console.error('Initialization error:', error);
             this.displayError('Error initializing the application: ' + error.message);
@@ -45,8 +55,8 @@ class App {
      * Binds all event handlers
      */
     bindEventHandlers() {
-        // Handler for farm change
-        this.farmSelector.addEventListener('change', () => this.handleFarmChange());
+        // Farm selector is fixed; no change handler
+        // this.farmSelector.addEventListener('change', () => this.handleFarmChange());
         
         // Handler for date range change
         this.dateRangeSelector.addEventListener('change', () => this.handleDateRangeChange());
@@ -651,25 +661,11 @@ class App {
         // Create welcome message element
         const messageDiv = document.createElement('div');
         messageDiv.className = 'welcome-message';
-        messageDiv.innerHTML = `
+            messageDiv.innerHTML = `
             <h2>Welcome to SFLventory</h2>
             <p>This application allows you to track your inventory evolution in Sunflower Land.</p>
             <p>We currently have ${farmCount} farms and ${itemCount} inventory items available for tracking.</p>
-            <p>To get started, please select a farm from the dropdown menu at the top of the page.</p>
-            <div class="connection-options">
-                <div class="telegram-option">
-                    <p class="telegram-notice"><strong>💬 Don't see your farm?</strong> You can add your farm to our tracking system using the Telegram bot <a href="https://t.me/SLFventory_bot" target="_blank">@SLFventory_bot</a>.</p>
-                </div>
-                <div class="metamask-option">
-                    <div class="metamask-highlight">
-                        <h3>🦊 Connect with MetaMask</h3>
-                        <p><strong>Connect with MetaMask and start tracking your farm statistics!</strong></p>
-                        <p>If you connect daily, an automatic backup will be created and you can watch your farm evolution over time.</p>
-                        <p class="metamask-cta">👇 Scroll down to connect your wallet and start tracking!</p>
-                    </div>
-                </div>
-            </div>
-        `;
+            `;
         
         // Remove any existing messages
         const existingMessages = chartContainer.querySelectorAll('.welcome-message, .error-message');
@@ -717,24 +713,11 @@ class App {
         // Create welcome message element
         const messageDiv = document.createElement('div');
         messageDiv.className = 'welcome-message';
-        messageDiv.innerHTML = `
+            messageDiv.innerHTML = `
             <h2>${farmInfo.username}'s Farm (ID: ${farmInfo.farmId})</h2>
             <p>The tracking system contains ${dataManager.itemsList.allItems.length} possible inventory items.</p>
             <p>Last updated: ${farmInfo.mostRecentDate}</p>
             <p>To display data, please select one or more items from the inventory list on the left.</p>
-            <div class="connection-options">
-                <div class="telegram-option">
-                    <p class="telegram-notice"><strong>💬 Don't see your farm?</strong> You can add your farm to our tracking system using the Telegram bot <a href="https://t.me/SLFventory_bot" target="_blank">@SLFventory_bot</a>.</p>
-                </div>
-                <div class="metamask-option">
-                    <div class="metamask-highlight">
-                        <h3>🦊 Connect with MetaMask</h3>
-                        <p><strong>Connect with MetaMask and start tracking your farm statistics!</strong></p>
-                        <p>If you connect daily, an automatic backup will be created and you can watch your farm evolution over time.</p>
-                        <p class="metamask-cta">👇 Scroll down to connect your wallet and start tracking!</p>
-                    </div>
-                </div>
-            </div>
         `;
         
         // Remove any existing messages

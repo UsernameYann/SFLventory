@@ -6,7 +6,6 @@
     <meta name="referrer" content="origin">
     <title>SFLventory</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/sfl-module.css">
     <!-- Utilisation de l'icône sunflower existante -->
     <link rel="icon" href="images/sunflower-icon.png">
     <!-- Chart.js pour les graphiques -->
@@ -21,11 +20,10 @@
         </div>
         <div class="controls-container">
             <div class="farm-selection">
-                <select id="farm-selector">
-                    <option value="">Choose a farm...</option>
-                    <!-- Options will be added dynamically via JavaScript -->
-                </select>
-            </div>
+                    <select id="farm-selector" disabled>
+                        <option value="219328" selected>Farm 219328</option>
+                    </select>
+                </div>
             <div class="date-range">
                 <select id="date-range-selector">
                     <option value="7">Last 7 days</option>
@@ -77,22 +75,16 @@
         </div>
     </main>
 
-    <div id="sfl-module" class="sfl-container">
-        <button id="connectButton">Connect MetaMask</button>
-        <div id="status" class="sfl-message"></div>
-        <div id="tokenInfo" class="sfl-token-info"></div>
-        <div id="walletAddress" class="sfl-wallet-info"></div>
-    </div>
+    <!-- MetaMask and Telegram integrations removed -->
 
     <footer>
         <p>© 2025 SFLventory</p>
     </footer>
 
-    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/dataManager.js"></script>
     <script src="js/chartManager.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/sfl-module.js"></script>
+    <!-- sfl-module.js (MetaMask) intentionally not included -->
 </body>
 </html>

@@ -376,75 +376,7 @@ button:hover {
 }
 
 /* Styles pour les options de connexion */
-.connection-options {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.telegram-option {
-    padding: 0.8rem;
-    background: linear-gradient(135deg, #0088cc, #00a6e6);
-    border-radius: 8px;
-    border-left: 3px solid #005580;
-}
-
-.telegram-notice {
-    color: white;
-    margin: 0;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.telegram-notice a {
-    color: #ffeb3b;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.telegram-notice a:hover {
-    text-decoration: underline;
-}
-
-.metamask-option {
-    padding: 0;
-}
-
-.metamask-highlight {
-    background: linear-gradient(135deg, #f6851b, #e2761b);
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 3px solid #d4611a;
-    color: white;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(246, 133, 27, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.metamask-highlight:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(246, 133, 27, 0.3);
-}
-
-.metamask-highlight h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-}
-
-.metamask-highlight p {
-    margin: 0.3rem 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.metamask-cta {
-    font-size: 0.95rem !important;
-    font-weight: bold !important;
-    margin-top: 0.5rem !important;
-    animation: pulse 2s infinite;
-}
+/* connection-options, telegram and metamask UI removed */
 
 @keyframes pulse {
     0% { opacity: 1; }
