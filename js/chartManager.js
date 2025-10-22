@@ -10,198 +10,23 @@ class ChartManager {
         this.hiddenSeasons = new Set(); // Track hidden seasons
         this.hiddenEvents = new Set(); // Track hidden events
 
-        // Register the custom plugins for backgrounds
-        this.registerSeasonBackgroundPlugin();
-        this.registerEventsPlugin();
+        // Seasons and events overlays are intentionally disabled to keep the
+        // charts clean. Previously custom plugins were registered here; they
+        // are left in the file for reference but not activated.
     }
 
     /**
      * Registers a custom Chart.js plugin to draw season backgrounds
      */
     registerSeasonBackgroundPlugin() {
-        const plugin = {
-            id: 'seasonBackgrounds',
-            beforeDraw: (chart, args, options) => {
-                if (!options.enabled || !this.seasons) {
-                    return;
-                }
-
-                // Only log if debug mode is enabled
-                if (CONFIG.DEBUG_MODE) {
-                    console.log('Drawing season backgrounds, seasons data:', this.seasons);
-                }
-                const { ctx, chartArea, scales } = chart;
-                const { top, bottom, left, right } = chartArea;
-                const width = right - left;
-                const height = bottom - top;
-
-                // Sort season dates for proper rendering
-                const seasonDates = Object.keys(this.seasons).sort();
-                if (CONFIG.DEBUG_MODE) {
-                    console.log('Chart X axis labels:', chart.data.labels);
-                    console.log('Sorted season dates:', seasonDates);
-                }
-
-                // Draw each season area
-                let currentSeason = null;
-                let startX = left;
-
-                for (let i = 0; i < seasonDates.length; i++) {
-                    const currentDate = seasonDates[i];
-                    const nextDate = i < seasonDates.length - 1 ? seasonDates[i + 1] : null;
-                    
-                    const season = this.seasons[currentDate];
-                    // Skip if this season is hidden via legend toggle
-                    if (this.hiddenSeasons.has(season)) {
-                        continue;
-                    }
-                    
-                    const seasonColor = CONFIG.SEASON_COLORS[season];
-                    
-                    if (!seasonColor) {
-                        console.log('No color found for season:', season);
-                        continue;
-                    }
-                    
-                    // Find the index in the chart labels that matches or is closest to our date
-                    let startIndex = chart.data.labels.findIndex(label => 
-                        label >= currentDate
-                    );
-                    
-                    let endIndex = nextDate ? 
-                        chart.data.labels.findIndex(label => label >= nextDate) : 
-                        chart.data.labels.length;
-                    
-                    // Handle edge cases
-                    if (startIndex === -1) startIndex = 0;
-                    if (endIndex === -1) endIndex = chart.data.labels.length;
-                    
-                    if (CONFIG.DEBUG_MODE) {
-                        console.log(`Season ${season} (${currentDate}): startIndex=${startIndex}, endIndex=${endIndex}`);
-                    }
-                    
-                    // Calculate x positions
-                    const xStart = startIndex >= 0 ? 
-                        scales.x.getPixelForValue(chart.data.labels[startIndex]) : 
-                        left;
-                    
-                    const xEnd = endIndex < chart.data.labels.length ? 
-                        scales.x.getPixelForValue(chart.data.labels[endIndex]) : 
-                        right;
-                    
-                    // Only draw if the positions are valid
-                    if (isNaN(xStart) || isNaN(xEnd)) continue;
-                    
-                    // Draw the rectangle for this season
-                    ctx.fillStyle = seasonColor;
-                    ctx.fillRect(xStart, top, xEnd - xStart, height);
-                }
-            }
-        };
-
-        Chart.register(plugin);
+        // Plugin implementation kept for reference but not registered.
+        return;
     }    /**
      * Registers a custom Chart.js plugin to draw events with diagonal patterns
      */
     registerEventsPlugin() {
-        const plugin = {
-            id: 'eventsPattern',
-            beforeDraw: (chart, args, options) => {
-                if (!this.events) {
-                    return;
-                }
-
-                // Only log if debug mode is enabled
-                if (CONFIG.DEBUG_MODE) {
-                    console.log('Drawing events patterns, events data:', this.events);
-                }
-                
-                const { ctx, chartArea, scales } = chart;
-                const { top, bottom, left, right } = chartArea;
-                const height = bottom - top;
-
-                // Process each event date
-                for (const [eventDate, eventType] of Object.entries(this.events)) {
-                    // Skip if this event type is hidden via legend toggle
-                    if (this.hiddenEvents.has(eventType)) {
-                        continue;
-                    }
-                    
-                    // Get color for this event type
-                    const eventColor = CONFIG.EVENTS_COLORS[eventType];
-                    if (!eventColor) {
-                        if (CONFIG.DEBUG_MODE) {
-                            console.log('No color found for event type:', eventType);
-                        }
-                        continue;
-                    }
-                    
-                    // Find corresponding index in chart labels
-                    const dateIndex = chart.data.labels.findIndex(label => label === eventDate);
-                    if (dateIndex === -1) continue; // Skip if date not found in chart
-                    
-                    // Calculate x position for event (same day, so only one position)
-                    const xPos = scales.x.getPixelForValue(chart.data.labels[dateIndex]);
-                    
-                    // Skip if position is invalid
-                    if (isNaN(xPos)) continue;
-                    
-                    // Determine width of a single day by estimating based on nearby points or fixed value
-                    let dayWidth;
-                    if (dateIndex < chart.data.labels.length - 1) {
-                        const nextDayPos = scales.x.getPixelForValue(chart.data.labels[dateIndex + 1]);
-                        dayWidth = nextDayPos - xPos;
-                    } else if (dateIndex > 0) {
-                        const prevDayPos = scales.x.getPixelForValue(chart.data.labels[dateIndex - 1]);
-                        dayWidth = xPos - prevDayPos;
-                    } else {
-                        // Fallback to estimated width if can't calculate
-                        dayWidth = 20; 
-                    }
-                    
-                    // Ensure we have a positive width
-                    dayWidth = Math.max(dayWidth, 10);
-                    
-                    // Draw diagonal pattern
-                    ctx.save();
-                    ctx.fillStyle = eventColor;
-                    
-                    // Create diagonal stripes pattern
-                    const patternCanvas = document.createElement('canvas');
-                    const patternContext = patternCanvas.getContext('2d');
-                    const patternSize = 10;
-                    
-                    patternCanvas.width = patternSize;
-                    patternCanvas.height = patternSize;
-                    
-                    // Draw diagonal lines for pattern
-                    patternContext.fillStyle = 'transparent';
-                    patternContext.fillRect(0, 0, patternSize, patternSize);
-                    patternContext.strokeStyle = eventColor;
-                    patternContext.lineWidth = 1;
-                    patternContext.beginPath();
-                    patternContext.moveTo(0, 0);
-                    patternContext.lineTo(patternSize, patternSize);
-                    patternContext.stroke();
-                    
-                    // Create pattern and apply
-                    const pattern = ctx.createPattern(patternCanvas, 'repeat');
-                    ctx.fillStyle = pattern;
-                    
-                    // Draw event rectangle with pattern - position exacte
-                    ctx.fillRect(xPos, top, dayWidth, height);
-                    
-                    // Add a border to help visibility
-                    ctx.strokeStyle = eventColor;
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(xPos, top, dayWidth, height);
-                    
-                    ctx.restore();
-                }
-            }
-        };
-
-        Chart.register(plugin);
+        // Plugin implementation kept for reference but not registered.
+        return;
     }
     /**
      * Creates legend datasets for seasons
@@ -326,120 +151,20 @@ class ChartManager {
 
         const options = { ...CONFIG.CHART_OPTIONS };
         
-        // Ensure season background plugin is enabled
-        if (!options.plugins) {
-            options.plugins = {};
-        }
-        
-        if (!options.plugins.seasonBackgrounds) {
-            options.plugins.seasonBackgrounds = { enabled: true };
-        }
-        
-        // Enable legend and configure it to show only seasons
-        if (!options.plugins.legend) {
-            options.plugins.legend = {};
-        }
-        
+        // Use default legend behavior — only actual datasets will be shown.
+        if (!options.plugins) options.plugins = {};
         options.plugins.legend = {
             display: true,
-            position: 'top',
-            onClick: (e, legendItem, legend) => {
-                // Call the original onClick handler
-                const originalOnClick = Chart.defaults.plugins.legend.onClick;
-                originalOnClick.call(legend, e, legendItem, legend);
-                
-                // Identify if this is an event dataset or a season dataset
-                const dataset = legend.chart.data.datasets.find(ds => ds.label === legendItem.text);
-                if (!dataset) return;
-                
-                if (dataset.isEventDataset) {
-                    // Get the original event type from the formatted label
-                    let eventType = legendItem.text
-                        .replace(/\s([A-Z])/g, '$1') // Remove spaces before capitals
-                        .replace(/\s/g, '')  // Remove any remaining spaces
-                        .replace(/^./, str => str.toLowerCase()); // Lowercase first letter
-                    
-                    // Toggle the event visibility in our tracking Set
-                    if (this.hiddenEvents.has(eventType)) {
-                        this.hiddenEvents.delete(eventType);
-                    } else {
-                        this.hiddenEvents.add(eventType);
-                    }
-                } else {
-                    // For seasons, handle as before
-                    const seasonName = legendItem.text.toLowerCase();
-                    
-                    // Toggle the season visibility in our tracking Set
-                    if (this.hiddenSeasons.has(seasonName)) {
-                        this.hiddenSeasons.delete(seasonName);
-                    } else {
-                        this.hiddenSeasons.add(seasonName);
-                    }
-                }
-                
-                // Update the chart to reflect the changes in background
-                this.chart.update();
-            },
-            labels: {
-                // Filter to show both seasons and events in the legend
-                filter: (legendItem, chartData) => {
-                    // For event datasets (identified by the isEventDataset property)
-                    const dataset = chartData.datasets.find(ds => ds.label === legendItem.text);
-                    if (dataset && dataset.isEventDataset) {
-                        return true;
-                    }
-                    
-                    // For season datasets
-                    const uniqueSeasons = new Set();
-                    if (this.seasons) {
-                        Object.values(this.seasons).forEach(season => {
-                            uniqueSeasons.add(season.charAt(0).toUpperCase() + season.slice(1));
-                        });
-                    }
-                    
-                    // Show if label matches a season
-                    return uniqueSeasons.has(legendItem.text);
-                },
-                usePointStyle: true,
-                boxWidth: 15,
-                boxHeight: 15,
-                padding: 10,
-                // Custom label generator to show pattern for events
-                generateLabels: (chart) => {
-                    const defaultLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                    
-                    // Process each label to add pattern for events
-                    defaultLabels.forEach(label => {
-                        const dataset = chart.data.datasets.find(ds => ds.label === label.text);
-                        if (dataset && dataset.isEventDataset && dataset.patternCanvas) {
-                            // Set pattern as background
-                            const pattern = chart.ctx.createPattern(dataset.patternCanvas, 'repeat');
-                            label.fillStyle = pattern || label.fillStyle;
-                            label.strokeStyle = dataset.borderColor;
-                        }
-                    });
-                    
-                    return defaultLabels;
-                }
-            }
+            position: 'top'
         };
         
-        // Create legend datasets for both seasons and events
-        const seasonLegendDatasets = this.createSeasonsLegendDatasets();
-        const eventsLegendDatasets = this.createEventsLegendDatasets();
-        
-        // Combine all legend datasets with actual data datasets
-        // Make sure the actual data datasets are not used for the legend
+        // Only use the provided data datasets
         const combinedData = {
             labels: chartData.labels,
-            datasets: [
-                ...seasonLegendDatasets,
-                ...eventsLegendDatasets,
-                ...chartData.datasets.map(dataset => ({
-                    ...dataset,
-                    order: 1 // Make sure data appears behind legend-only datasets in z-order
-                }))
-            ]
+            datasets: chartData.datasets.map(dataset => ({
+                ...dataset,
+                order: 1
+            }))
         };
         
         // If the chart already exists, update it
