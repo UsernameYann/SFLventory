@@ -153,6 +153,32 @@ function saveSelected() {
 // Charger la sélection mémorisée avant tout rendu
 loadSelected();
 
+// Favorites persistence
+const FAVORITES_KEY = 'sflv:favorites';
+let favorites = [];
+function loadFavorites() {
+    try {
+        const arr = JSON.parse(localStorage.getItem(FAVORITES_KEY));
+        if (Array.isArray(arr)) {
+            favorites = arr.filter(v => typeof v === 'string');
+        }
+    } catch {}
+}
+function saveFavorites() {
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); } catch {}
+}
+function toggleFavorite(itemValue) {
+    const idx = favorites.indexOf(itemValue);
+    if (idx > -1) {
+        favorites.splice(idx, 1);
+    } else {
+        favorites.push(itemValue);
+    }
+    saveFavorites();
+    render();
+}
+loadFavorites();
+
 function isCollapsibleCategory(key) {
     return key === 'Other' || (typeof key === 'string' && key.startsWith('dyn:'));
 }
@@ -322,7 +348,7 @@ async function load(days, dates) {
     const allAvailable = new Set();
     const farmActivitySet = new Set();
     const bumpkinActivitySet = new Set();
-    let hasTaxFreeSFL = false, hasExperience = false;
+    let hasTaxFreeSFL = false, hasExperience = false, hasSocialFarmingPoints = false;
     targetDates.forEach(d => {
         if (!data[d]) return;
         // Inventaire + monnaies
@@ -334,6 +360,7 @@ async function load(days, dates) {
         // éléments de compte
     if (data[d].farm?.bank?.taxFreeSFL != null) hasTaxFreeSFL = true;
     if ((data[d].farm?.bumpkin?.experience != null)) hasExperience = true;
+    if (data[d].farm?.socialFarming?.points != null) hasSocialFarmingPoints = true;
     });
 
     // Organiser les items par catégories (existantes)
@@ -380,6 +407,11 @@ async function load(days, dates) {
         items.push({ type: 'category', name: 'Bumpkin', key: 'dyn:bumpkin', items: [id] });
         items.push({ type: 'item', name: 'Experience', id });
     }
+    if (hasSocialFarmingPoints) {
+        const id = 'socialFarming::Points';
+        items.push({ type: 'category', name: 'Social Farming', key: 'dyn:socialFarming', items: [id] });
+        items.push({ type: 'item', name: 'Points', id });
+    }
     // Island/Previous Expansions supprimé
     
     render();
@@ -409,7 +441,7 @@ async function loadRange(startStr, endStr, dates) {
     const allAvailable = new Set();
     const farmActivitySet = new Set();
     const bumpkinActivitySet = new Set();
-    let hasTaxFreeSFL = false, hasExperience = false;
+    let hasTaxFreeSFL = false, hasExperience = false, hasSocialFarmingPoints = false;
     targetDates.forEach(d => {
         if (!data[d]) return;
         [...Object.keys(data[d].farm?.inventory || {}), 'coins', 'FLOWER'].forEach(item => allAvailable.add(item));
@@ -417,6 +449,7 @@ async function loadRange(startStr, endStr, dates) {
     Object.keys(data[d].farm?.bumpkin?.activity || {}).forEach(k => bumpkinActivitySet.add(k));
     if (data[d].farm?.bank?.taxFreeSFL != null) hasTaxFreeSFL = true;
     if (data[d].farm?.bumpkin?.experience != null) hasExperience = true;
+    if (data[d].farm?.socialFarming?.points != null) hasSocialFarmingPoints = true;
     });
 
     items = [];
@@ -458,6 +491,11 @@ async function loadRange(startStr, endStr, dates) {
         items.push({ type: 'category', name: 'Bumpkin', key: 'dyn:bumpkin', items: [id] });
         items.push({ type: 'item', name: 'Experience', id });
     }
+    if (hasSocialFarmingPoints) {
+        const id = 'socialFarming::Points';
+        items.push({ type: 'category', name: 'Social Farming', key: 'dyn:socialFarming', items: [id] });
+        items.push({ type: 'item', name: 'Points', id });
+    }
     // Island/Previous Expansions supprimé
 
     render();
@@ -465,6 +503,34 @@ async function loadRange(startStr, endStr, dates) {
 
 function render() {
     let html = '';
+    
+    // 0) Catégorie Favoris (en premier, toujours visible si non vide)
+    const favoriteItems = items
+        .filter(item => item.type === 'item' && favorites.includes(item.id || item.name))
+        .filter(item => !searchTerm || item.name.toLowerCase().includes(searchTerm));
+    if (favoriteItems.length) {
+        const dataItems = favoriteItems.map(i => i.id || i.name).map(encodeURIComponent).join(',');
+        const allSelected = favoriteItems.every(i => selected.includes(i.id || i.name));
+        const key = 'Favorites';
+        const collapsed = isCollapsed(key);
+        const caret = collapsed ? '▸' : '▾';
+        html += `<div class="category-title" data-category="Favorites" data-items="${dataItems}" data-collapsible="1">
+            <span class="caret" data-toggle="${key}">${caret}</span>
+            <input type="checkbox" ${allSelected ? 'checked' : ''}>
+            <span class="name">⭐ Favorites</span>
+        </div>`;
+        html += `<div class="items ${collapsed ? 'collapsed' : ''}" data-items-container="${key}">` + favoriteItems.map(it => {
+            const color = ITEM_COLORS[it.name];
+            const labelStyle = color ? ` style=\"color:${color}\"` : '';
+            const inputStyle = color ? ` style=\"accent-color:${color}\"` : '';
+            const value = it.id || it.name;
+            const isFav = favorites.includes(value);
+            return `<label${labelStyle}>
+                <span class="fav-star" data-item="${value}" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFav ? '⭐' : '☆'}</span>
+                <input type="checkbox" value="${value}"${inputStyle}>${it.name}
+            </label>`;
+        }).join('') + `</div>`;
+    }
 
     // 1) Catégories de base (non repliables)
     CATEGORY_ORDER.forEach(catKey => {
@@ -483,7 +549,11 @@ function render() {
             const color = ITEM_COLORS[it.name];
             const labelStyle = color ? ` style=\"color:${color}\"` : '';
             const inputStyle = color ? ` style=\"accent-color:${color}\"` : '';
-            return `<label${labelStyle}><input type="checkbox" value="${it.name}"${inputStyle}>${it.name}</label>`;
+            const isFav = favorites.includes(it.name);
+            return `<label${labelStyle}>
+                <span class="fav-star" data-item="${it.name}" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFav ? '⭐' : '☆'}</span>
+                <input type="checkbox" value="${it.name}"${inputStyle}>${it.name}
+            </label>`;
         }).join('') + `</div>`;
     });
 
@@ -509,7 +579,11 @@ function render() {
             const labelStyle = color ? ` style=\"color:${color}\"` : '';
             const inputStyle = color ? ` style=\"accent-color:${color}\"` : '';
             const value = it.id || it.name;
-            return `<label${labelStyle}><input type="checkbox" value="${value}"${inputStyle}>${it.name}</label>`;
+            const isFav = favorites.includes(value);
+            return `<label${labelStyle}>
+                <span class="fav-star" data-item="${value}" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFav ? '⭐' : '☆'}</span>
+                <input type="checkbox" value="${value}"${inputStyle}>${it.name}
+            </label>`;
         }).join('') + `</div>`;
     });
 
@@ -533,7 +607,11 @@ function render() {
             const color = ITEM_COLORS[it.name];
             const labelStyle = color ? ` style=\"color:${color}\"` : '';
             const inputStyle = color ? ` style=\"accent-color:${color}\"` : '';
-            return `<label${labelStyle}><input type="checkbox" value="${it.name}"${inputStyle}>${it.name}</label>`;
+            const isFav = favorites.includes(it.name);
+            return `<label${labelStyle}>
+                <span class="fav-star" data-item="${it.name}" title="${isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFav ? '⭐' : '☆'}</span>
+                <input type="checkbox" value="${it.name}"${inputStyle}>${it.name}
+            </label>`;
         }).join('') + `</div>`;
     }
 
@@ -594,6 +672,16 @@ function render() {
         
         checkbox.onchange = () => {
             toggleCategory(categoryKey, checkbox.checked, catItems);
+        };
+    });
+    
+    // Event listeners pour les étoiles de favoris
+    document.querySelectorAll('.fav-star').forEach(star => {
+        star.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const itemValue = star.getAttribute('data-item');
+            toggleFavorite(itemValue);
         };
     });
     
@@ -1186,6 +1274,11 @@ function get(d, item) {
                 if (name === 'Experience') {
                     const v = d.farm?.bumpkin?.experience ?? d.farm?.experience ?? d.experience;
                     return parseFloat(v) || 0;
+                }
+                return 0;
+            case 'socialFarming':
+                if (name === 'Points') {
+                    return parseFloat(d.farm?.socialFarming?.points) || 0;
                 }
                 return 0;
             default:

@@ -152,7 +152,9 @@ body.dark-mode #search {
 }
 
 #sidebar label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
     padding: 0.4rem;
     cursor: pointer;
     font-size: 0.9rem;
@@ -161,7 +163,22 @@ body.dark-mode #search {
 
 #sidebar label:hover { background: #f5f5f5; }
 body.dark-mode #sidebar label:hover { background: #333; }
-#sidebar input { margin-right: 0.5rem; cursor: pointer; }
+#sidebar input { cursor: pointer; }
+
+.fav-star {
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    padding: 0 0.2rem;
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.fav-star:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
 
 .category-title {
     font-weight: 600;
