@@ -3,88 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="origin">
-    <title>SFLventory — Sumac's farm</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <!-- Utilisation de l'icône sunflower existante -->
-    <link rel="icon" href="images/sunflower-icon.png">
-    <!-- Chart.js pour les graphiques -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Date-fns pour la manipulation des dates -->
-    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/index.min.js"></script>
+    <title>SFLventory</title>
+    <!-- Site icons (single source) -->
+    <link rel="icon" type="image/png" href="images/sunflower-icon.png">
+    <link rel="apple-touch-icon" href="images/sunflower-icon.png">
+    <meta name="theme-color" content="#4caf50">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <h1>SFLventory — Sumac's farm</h1>
-        </div>
-        <div class="controls-container">
-            <div class="farm-selection">
-                    <select id="farm-selector" disabled>
-                        <option value="219328" selected>Farm 219328</option>
-                    </select>
-                </div>
-            <div class="date-range">
-                <select id="date-range-selector">
-                    <option value="7">Last 7 days</option>
-                    <option value="30" selected>Last 30 days</option>
-                    <option value="180">Last 6 months</option>
-                    <option value="365">Last year</option>
-                    <option value="custom">Custom period</option>
-                </select>
+        <h1>Sumac's Farm</h1>
+        <div class="header-controls">
+            <button id="theme-toggle" title="Toggle dark mode">🌙</button>
+            <select id="period">
+                <option value="7">7d</option>
+                <option value="30" selected>1m</option>
+                <option value="90">3m</option>
+                <option value="180">6m</option>
+                <option value="270">9m</option>
+                <option value="365">1y</option>
+                <option value="custom">Custom…</option>
+            </select>
+            <div id="custom-range" class="custom-range" style="display:none">
+                <input type="date" id="start-date" />
+                <span aria-hidden="true">→</span>
+                <input type="date" id="end-date" />
+                <button id="apply-range" title="Appliquer la période">OK</button>
             </div>
         </div>
     </header>
 
-    <div class="controls-panel" style="display: none;">
-        <div class="custom-date-range" id="custom-date-container" style="display: none;">
-            <label for="start-date">From:</label>
-            <input type="date" id="start-date">
-            <label for="end-date">To:</label>
-            <input type="date" id="end-date">
-            <button id="apply-custom-date">Apply</button>
+    <aside id="sidebar">
+        <input type="text" id="search" placeholder="Search items...">
+        <div id="items"></div>
+    </aside>
+    <main id="chart">
+        <div id="loader" class="loader">
+            <div class="loader-bar"></div>
+            <div class="loader-text">Loading data...</div>
         </div>
-    </div>
-
-    <main class="content-area">
-        <div class="sidebar">
-            <div class="search-container">
-                <input type="text" id="item-search" placeholder="Search for an item...">
-                <div class="select-actions">
-                    <label class="select-all-label">
-                        <input type="checkbox" id="select-all">
-                    </label>
-                </div>
-            </div>
-            <div class="item-list-container">
-                <div id="item-list">
-                    <!-- Inventory items will be added dynamically here -->
-                </div>
-            </div>
-        </div>
-        <div class="chart-section">
-            <div class="chart-container">
-                <canvas id="inventory-chart"></canvas>
-            </div>
-            <div class="statistics-container">
-                <!-- The "Statistics" title has been removed -->
-                <div id="statistics-content">
-                    <!-- Statistics will be added dynamically here -->
-                </div>
-            </div>
+        <div class="chart-wrapper">
+            <div id="svg-container"></div>
+            <div id="legend"></div>
         </div>
     </main>
 
-    <!-- MetaMask and Telegram integrations removed -->
-
-    <footer>
-        <p>© 2025 SFLventory</p>
-    </footer>
-
-    <script src="js/config.js"></script>
-    <script src="js/dataManager.js"></script>
-    <script src="js/chartManager.js"></script>
-    <script src="js/app.js"></script>
-    <!-- sfl-module.js (MetaMask) intentionally not included -->
+    <script src="app.js"></script>
 </body>
 </html>
