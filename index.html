@@ -16,6 +16,7 @@
         <h1>Sumac's Farm</h1>
         <div class="header-controls">
             <button id="theme-toggle" title="Toggle dark mode">🌙</button>
+            <span id="season-display" title="Current season"></span>
             <select id="period">
                 <option value="7">7d</option>
                 <option value="30" selected>1m</option>
@@ -56,8 +57,25 @@
         </div>
     </main>
     <aside id="flowers-sidebar">
-        <h2>Low Stock Flowers</h2>
-        <div id="flowers-list"></div>
+        <div class="right-tabs" role="tablist" aria-label="Right sidebar tabs">
+            <button class="right-tab active" role="tab" aria-selected="true" aria-controls="panel-flowers" data-tab="flowers" aria-label="Flowers">🌸</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-fishing" data-tab="fishing" aria-label="Fishing">🎣</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-food" data-tab="food" aria-label="Food">🍳</button>
+        </div>
+        <div class="right-panels">
+            <section id="panel-flowers" class="right-panel active" role="tabpanel">
+                <h2>Low Stock Flowers</h2>
+                <div id="flowers-list"></div>
+            </section>
+            <section id="panel-fishing" class="right-panel" role="tabpanel">
+                <h2>Low Stock Fish</h2>
+                <div id="fishing-list"></div>
+            </section>
+            <section id="panel-food" class="right-panel" role="tabpanel">
+                <h2>Cooking</h2>
+                <div id="food-list"></div>
+            </section>
+        </div>
     </aside>
 
     <!-- Module-based scripts in dependency order -->
@@ -66,6 +84,8 @@
     <script src="js/flowers.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/customPaths.js"></script>
+    <script src="js/fishing.js"></script>
+    <script src="js/food.js"></script>
     <script src="js/chart.js"></script>
     <script src="app.js"></script>
 </body>

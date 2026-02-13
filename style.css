@@ -89,6 +89,14 @@ body.dark-mode .custom-range input[type="date"] {
     transform: scale(1.1);
 }
 
+#season-display {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    min-width: 2rem;
+    text-align: center;
+}
+
 select {
     padding: 0.5rem;
     border: 1px solid #ddd;
@@ -269,6 +277,158 @@ body.dark-mode #sidebar label:hover { background: #333; }
     transition: background 0.3s, border-color 0.3s;
 }
 
+.right-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.right-tab {
+    border: 1px solid #e0e0e0;
+    background: #f7f7f7;
+    color: #555;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.right-tab.active {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: #fff;
+}
+
+body.dark-mode .right-tab {
+    background: #2a2a2a;
+    border-color: #3a3a3a;
+    color: #ccc;
+}
+
+body.dark-mode .right-tab.active {
+    background: #4caf50;
+    border-color: #4caf50;
+    color: #fff;
+}
+
+.right-panel {
+    display: none;
+}
+
+.right-panel.active {
+    display: block;
+}
+
+.right-placeholder {
+    font-size: 0.8rem;
+    color: #777;
+    line-height: 1.4;
+}
+
+body.dark-mode .right-placeholder {
+    color: #aaa;
+}
+
+.fishing-season {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .fishing-season {
+    color: #aaa;
+}
+
+.fishing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.fish-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .fish-group {
+    border-bottom: 1px solid #333;
+}
+
+.fish-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.fish-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .fish-group h3 {
+    color: #777;
+}
+
+.fish-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.fish-card:hover {
+    opacity: 0.85;
+}
+
+.fish-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fish-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4caf50;
+}
+
+body.dark-mode .fish-stock {
+    color: #66bb6a;
+}
+
+.fish-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+body.dark-mode .fish-info {
+    color: #999;
+}
+
+.fish-recipe {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #666;
+    margin-top: 0.4rem;
+}
+
+body.dark-mode .fish-recipe {
+    color: #aaa;
+}
+
 body.dark-mode #flowers-sidebar {
     background: #1a1a1a;
     border-left: 1px solid #333;
@@ -352,6 +512,94 @@ body.dark-mode .flower-info {
 }
 
 body.dark-mode .flower-recipe {
+    color: #aaa;
+}
+
+.food-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.food-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .food-group {
+    border-bottom: 1px solid #333;
+}
+
+.food-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.food-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .food-group h3 {
+    color: #777;
+}
+
+.food-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.food-card:hover {
+    opacity: 0.85;
+}
+
+.food-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.food-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4caf50;
+}
+
+body.dark-mode .food-stock {
+    color: #66bb6a;
+}
+
+.food-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+body.dark-mode .food-info {
+    color: #999;
+}
+
+.food-recipe {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #666;
+    margin-top: 0.4rem;
+}
+
+body.dark-mode .food-recipe {
     color: #aaa;
 }
 

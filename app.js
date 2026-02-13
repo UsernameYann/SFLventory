@@ -15,6 +15,16 @@ let activeDates = [];
 window.customPathData = null;
 let availableDatesGlobal = [];
 
+// Update season display in header
+function updateSeasonDisplay() {
+    const seasonDisplay = document.getElementById('season-display');
+    if (seasonDisplay) {
+        const emoji = SEASON_EMOJIS?.[currentSeason] || '❄️';
+        seasonDisplay.textContent = emoji;
+        seasonDisplay.title = currentSeason.charAt(0).toUpperCase() + currentSeason.slice(1);
+    }
+}
+
 // Initialize app - load initial data
 async function init() {
     showLoader();
@@ -76,6 +86,9 @@ async function init() {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     };
     
+    // Update season display
+    updateSeasonDisplay();
+    
     // Préparer le custom range
     const periodSel = document.getElementById('period');
     const customBox = document.getElementById('custom-range');
@@ -134,6 +147,33 @@ async function init() {
         searchTerm = e.target.value.toLowerCase();
         render();
     };
+
+    setupRightSidebarTabs();
+}
+
+function setupRightSidebarTabs() {
+    const tabs = Array.from(document.querySelectorAll('.right-tab'));
+    const panels = Array.from(document.querySelectorAll('.right-panel'));
+    if (!tabs.length || !panels.length) return;
+
+    const activateTab = (tab) => {
+        const targetId = tab.getAttribute('aria-controls');
+        const targetPanel = targetId ? document.getElementById(targetId) : null;
+
+        tabs.forEach(t => {
+            const isActive = t === tab;
+            t.classList.toggle('active', isActive);
+            t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        panels.forEach(panel => {
+            panel.classList.toggle('active', panel === targetPanel);
+        });
+    };
+
+    tabs.forEach(tab => {
+        tab.onclick = () => activateTab(tab);
+    });
 }
 
 // Load data for specific period (days)
@@ -262,11 +302,13 @@ async function load(days, dates) {
             currentInventory = data[latestDate].farm.inventory;
         }
         const farmData = data[latestDate]?.farm;
-        currentSeason = farmData?.season?.season || farmData?.season || "winter";
+        currentSeason = farmData?.season?.season || farmData?.season || "winter";        updateSeasonDisplay();        updateSeasonDisplay();
     }
     
     render();
     renderFlowersList();
+    renderFishingPanel();
+    renderFoodPanel();
 }
 
 // Load data for custom date range
@@ -387,6 +429,8 @@ async function loadRange(startStr, endStr, dates) {
 
     render();
     renderFlowersList();
+    renderFishingPanel();
+    renderFoodPanel();
 }
 
 // Custom path event listeners
