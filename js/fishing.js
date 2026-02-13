@@ -69,7 +69,24 @@ const GUARANTEED_RESULTS = [
 ];
 
 function getFishMinStock(name) {
-    return ['Red Snapper', 'Tuna', 'Anchovy'].includes(name) ? 30 : 20;
+    // Expert fish
+    if (name === 'Tuna') return 30;
+    if (['Saw Shark', 'Whale Shark', 'White Shark'].includes(name)) return 1;
+    
+    // Advanced fish
+    if (name === 'Red Snapper') return 30;
+    if (['Ray', 'Barred Knifejaw'].includes(name)) return 15;
+    if (name === 'Hammerhead shark') return 5;
+    
+    // Check if it's an expert fish (not Tuna and not the sharks mentioned above)
+    const fish = FISH_DB.find(f => f.name === name);
+    if (fish && fish.tier === 'EXPERT') return 15;
+    
+    // Advanced fish default
+    if (fish && fish.tier === 'ADVANCED') return 20;
+    
+    // Basic fish
+    return name === 'Anchovy' ? 30 : 20;
 }
 
 function formatLikes(likes) {
