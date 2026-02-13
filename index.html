@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="images/sunflower-icon.png">
     <link rel="apple-touch-icon" href="images/sunflower-icon.png">
     <meta name="theme-color" content="#4caf50">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://*.s3.eu-west-3.amazonaws.com">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,6 +37,13 @@
     <aside id="sidebar">
         <input type="text" id="search" placeholder="Search items...">
         <div id="items"></div>
+        
+        <div class="custom-path-section">
+            <h3>Custom Path</h3>
+            <input type="text" id="custom-path-input" placeholder="e.g., farm.pets.nfts.*.experience">
+            <button id="custom-path-load">Load</button>
+            <div id="custom-path-results" class="custom-results"></div>
+        </div>
     </aside>
     <main id="chart">
         <div id="loader" class="loader">
@@ -47,7 +55,18 @@
             <div id="legend"></div>
         </div>
     </main>
+    <aside id="flowers-sidebar">
+        <h2>Low Stock Flowers</h2>
+        <div id="flowers-list"></div>
+    </aside>
 
+    <!-- Module-based scripts in dependency order -->
+    <script src="js/constants.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/flowers.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/customPaths.js"></script>
+    <script src="js/chart.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
