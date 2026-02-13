@@ -86,9 +86,30 @@ function loadCustomPath() {
     if (!input || !input.value.trim()) return;
     
     const pathStr = input.value.trim();
-    const customData = getHistoricalValuesFromPath(pathStr);
+    const targetDates = Array.isArray(activeDates) && activeDates.length
+        ? [...activeDates].sort()
+        : Object.keys(data).sort();
+
+    const customData = {};
+    let hasAnyValue = false;
+    for (const dateStr of targetDates) {
+        if (data[dateStr]) {
+            const val = getAllValuesFromPath(data[dateStr], pathStr);
+            if (val !== undefined && val !== null && isNumericValue(val)) {
+                customData[dateStr] = toNumber(val);
+                hasAnyValue = true;
+            } else {
+                customData[dateStr] = 0;
+            }
+        } else {
+            customData[dateStr] = 0;
+        }
+    }
     
-    if (Object.keys(customData).length === 0) return;
+    if (!hasAnyValue) {
+        alert('Custom Path invalide ou sans valeurs pour la periode actuelle.');
+        return;
+    }
     
     const customId = window.customPathData ? Object.keys(window.customPathData).length + 1 : 1;
     const pathKey = `Custom: ${pathStr}`;
