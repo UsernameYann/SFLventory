@@ -233,6 +233,8 @@ async function load(days, dates) {
     
     // Load custom paths from localStorage and add them to items
     loadCustomPathData();
+    // Recalculate custom paths for the current period
+    refreshCustomPathsForPeriod(targetDates);
     if (window.customPathData && Object.keys(window.customPathData).length > 0) {
         const customCatKey = 'dyn:customPaths';
         let customCat = items.find(i => i.type === 'category' && i.key === customCatKey);

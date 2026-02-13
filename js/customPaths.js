@@ -114,3 +114,30 @@ function loadCustomPath() {
     activeDates = Object.keys(data).filter(d => data[d]);
     load(activeDates.length, activeDates);
 }
+// Recalculate custom paths for a specific period (targetDates)
+function refreshCustomPathsForPeriod(targetDates) {
+    if (!window.customPathData) return;
+    
+    for (const pathKey of Object.keys(window.customPathData)) {
+        // Extract path string from "Custom: farm.balance"
+        const pathStr = pathKey.replace('Custom: ', '');
+        
+        // Recalculate values for ALL target dates
+        const filteredData = {};
+        for (const dateStr of targetDates) {
+            if (data[dateStr]) {
+                const val = getAllValuesFromPath(data[dateStr], pathStr);
+                // Ajouter la valeur si elle existe, sinon 0 (comme les autres items)
+                filteredData[dateStr] = (val !== undefined && val !== null && isNumericValue(val)) ? val : 0;
+            } else {
+                filteredData[dateStr] = 0;
+            }
+        }
+        
+        // Update customPathData with all dates
+        window.customPathData[pathKey] = Object.entries(filteredData).map(([date, value]) => ({
+            date: date,
+            value: value
+        }));
+    }
+}
