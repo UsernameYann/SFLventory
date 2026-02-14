@@ -2,6 +2,25 @@
 // FISHING - Seasonal fishing recommendations and thresholds
 // ============================================================================
 
+const FISH_URGENCY_LEVELS = {
+    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+};
+
+function getFishUrgency(stock, minStock) {
+    const percentage = (stock / minStock) * 100;
+    
+    if (stock < minStock * 0.25) return FISH_URGENCY_LEVELS.CRITICAL;
+    if (stock < minStock * 0.50) return FISH_URGENCY_LEVELS.VERY_HIGH;
+    if (stock < minStock * 0.75) return FISH_URGENCY_LEVELS.HIGH;
+    if (stock < minStock) return FISH_URGENCY_LEVELS.MEDIUM;
+    return FISH_URGENCY_LEVELS.GOOD;
+}
+
 const FISH_TIERS = ['BASIC', 'ADVANCED', 'EXPERT'];
 
 const FISH_TIER_LABELS = {
@@ -140,12 +159,13 @@ function renderFishingPanel() {
 
         tierFish.forEach(fish => {
             const bait = FISH_TIER_BAIT[fish.tier];
+            const urgency = getFishUrgency(fish.count, fish.minStock);
             
             let fishHtml = `
                 <div class="fish-card">
                     <div class="fish-name">
                         <span>${fish.name}</span>
-                        <span class="fish-stock">${Math.floor(fish.count)}/${fish.minStock}</span>
+                        <span class="fish-stock ${urgency.colorClass}">${Math.floor(fish.count)}/${fish.minStock}</span>
                     </div>
                     <div class="fish-info">
                         <span>${bait}</span>

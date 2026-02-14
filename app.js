@@ -302,12 +302,21 @@ async function load(days, dates) {
             currentInventory = data[latestDate].farm.inventory;
         }
         const farmData = data[latestDate]?.farm;
-        currentSeason = farmData?.season?.season || farmData?.season || "winter";        updateSeasonDisplay();        updateSeasonDisplay();
+        currentSeason = farmData?.season?.season || farmData?.season || "winter";
+        updateSeasonDisplay();
     }
     
     render();
     renderFlowersList();
     renderFishingPanel();
+    renderVegetablesPanel();
+    renderFruitsPanel();
+    renderGreenhousePanel();
+    renderResourcesPanel();
+    renderAnimalsPanel();
+    renderCompostersPanel();
+    renderCrustaceansPanel();
+    renderFishMarketPanel();
     renderFoodPanel();
 }
 
@@ -425,11 +434,20 @@ async function loadRange(startStr, endStr, dates) {
         }
         const farmData = data[latestDate]?.farm;
         currentSeason = farmData?.season?.season || farmData?.season || "winter";
+        updateSeasonDisplay();
     }
 
     render();
     renderFlowersList();
     renderFishingPanel();
+    renderVegetablesPanel();
+    renderFruitsPanel();
+    renderGreenhousePanel();
+    renderResourcesPanel();
+    renderAnimalsPanel();
+    renderCompostersPanel();
+    renderCrustaceansPanel();
+    renderFishMarketPanel();
     renderFoodPanel();
 }
 

@@ -2,6 +2,25 @@
 // FOOD - Cooking recipes and ingredient tracking
 // ============================================================================
 
+const FOOD_URGENCY_LEVELS = {
+    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+};
+
+function getFoodUrgency(stock, limit) {
+    const percentage = (stock / limit) * 100;
+    
+    if (stock < limit * 0.25) return FOOD_URGENCY_LEVELS.CRITICAL;
+    if (stock < limit * 0.50) return FOOD_URGENCY_LEVELS.VERY_HIGH;
+    if (stock < limit * 0.75) return FOOD_URGENCY_LEVELS.HIGH;
+    if (stock < limit) return FOOD_URGENCY_LEVELS.MEDIUM;
+    return FOOD_URGENCY_LEVELS.GOOD;
+}
+
 const FOOD_BUILDINGS = {
     'Fire Pit': { icon: '🔥' },
     'Kitchen': { icon: '🍳' },
@@ -191,11 +210,12 @@ function renderFoodPanel() {
         html += `<h3>${config.icon} ${building}</h3>`;
 
         buildingRecipes.forEach(recipe => {
+            const urgency = getFoodUrgency(recipe.stock, recipe.limit);
             let recipeHtml = `
                 <div class="food-card">
                     <div class="food-name">
                         <span>${recipe.name}</span>
-                        <span class="food-stock">${Math.floor(recipe.stock)}/${recipe.limit}</span>
+                        <span class="food-stock ${urgency.colorClass}">${Math.floor(recipe.stock)}/${recipe.limit}</span>
                     </div>
                     <div class="food-recipe">
             `;

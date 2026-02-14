@@ -625,6 +625,669 @@ body.dark-mode .food-recipe {
     font-weight: 600;
 }
 
+/* ========== VEGETABLES PANEL ========== */
+.vegetable-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .vegetable-group {
+    border-bottom: 1px solid #333;
+}
+
+.vegetable-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.vegetable-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .vegetable-group h3 {
+    color: #777;
+}
+
+.vegetable-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.vegetable-card:hover {
+    opacity: 0.85;
+}
+
+.vegetable-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.veg-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.veg-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.vegetable-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.vegetable-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.veg-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .vegetable-info {
+    color: #999;
+}
+
+/* Urgency color classes */
+.urgent-critical {
+    color: #d32f2f !important;
+    font-weight: 600;
+}
+
+body.dark-mode .urgent-critical {
+    color: #ef5350 !important;
+}
+
+.urgent-very-high {
+    color: #f4511e !important;
+    font-weight: 600;
+}
+
+body.dark-mode .urgent-very-high {
+    color: #ff5722 !important;
+}
+
+.urgent-high {
+    color: #f57c00 !important;
+    font-weight: 600;
+}
+
+body.dark-mode .urgent-high {
+    color: #ff9800 !important;
+}
+
+.urgent-medium {
+    color: #ffa726 !important;
+    font-weight: 600;
+}
+
+body.dark-mode .urgent-medium {
+    color: #ffb74d !important;
+}
+
+.urgent-low {
+    color: #7cb342 !important;
+    font-weight: 500;
+}
+
+body.dark-mode .urgent-low {
+    color: #9ccc65 !important;
+}
+
+.urgent-good {
+    color: #4caf50 !important;
+    font-weight: 500;
+}
+
+body.dark-mode .urgent-good {
+    color: #66bb6a !important;
+}
+
+/* ========== FRUITS PANEL ========== */
+.fruit-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .fruit-group {
+    border-bottom: 1px solid #333;
+}
+
+.fruit-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.fruit-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .fruit-group h3 {
+    color: #777;
+}
+
+.fruit-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.fruit-card:hover {
+    opacity: 0.85;
+}
+
+.fruit-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fruit-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.fruit-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.fruit-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.fruit-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.fruit-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .fruit-info {
+    color: #999;
+}
+
+/* ========== GREENHOUSE PANEL ========== */
+.greenhouse-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .greenhouse-group {
+    border-bottom: 1px solid #333;
+}
+
+.greenhouse-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.greenhouse-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .greenhouse-group h3 {
+    color: #777;
+}
+
+.greenhouse-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.greenhouse-card:hover {
+    opacity: 0.85;
+}
+
+.greenhouse-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.greenhouse-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.greenhouse-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.greenhouse-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.greenhouse-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.greenhouse-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .greenhouse-info {
+    color: #999;
+}
+
+/* ========== RESOURCES PANEL ========== */
+.resource-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .resource-group {
+    border-bottom: 1px solid #333;
+}
+
+.resource-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.resource-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .resource-group h3 {
+    color: #777;
+}
+
+.resource-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.resource-card:hover {
+    opacity: 0.85;
+}
+
+.resource-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resource-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.resource-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.resource-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.resource-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.resource-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .resource-info {
+    color: #999;
+}
+
+/* ========== ANIMALS PANEL ========== */
+.animal-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .animal-group {
+    border-bottom: 1px solid #333;
+}
+
+.animal-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.animal-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .animal-group h3 {
+    color: #777;
+}
+
+.animal-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.animal-card:hover {
+    opacity: 0.85;
+}
+
+.animal-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.animal-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.animal-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.animal-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.animal-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.animal-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .animal-info {
+    color: #999;
+}
+
+/* ========== COMPOSTERS PANEL ========== */
+.composter-group {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+body.dark-mode .composter-group {
+    border-bottom: 1px solid #333;
+}
+
+.composter-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.composter-group h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+body.dark-mode .composter-group h3 {
+    color: #777;
+}
+
+.composter-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.composter-card:hover {
+    opacity: 0.85;
+}
+
+.composter-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.composter-right {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.composter-to-top {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.composter-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.composter-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.4rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.composter-max {
+    min-width: 50px;
+    text-align: right;
+}
+
+body.dark-mode .composter-info {
+    color: #999;
+}
+
+/* ========== CRUSTACEANS PANEL ========== */
+.crustacean-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.crustacean-card:hover {
+    opacity: 0.85;
+}
+
+.crustacean-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.crustacean-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.crustacean-info {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.3rem;
+}
+
+body.dark-mode .crustacean-info {
+    color: #999;
+}
+
+.crustacean-recipe {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+}
+
+.crustacean-recipe .recipe-step {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ========== FISH MARKET PANEL ========== */
+.fish-market-card {
+    padding: 0.8rem 0;
+    border-bottom: none;
+    transition: opacity 0.2s;
+}
+
+.fish-market-card:hover {
+    opacity: 0.85;
+}
+
+.fish-market-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fish-market-stock {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 50px;
+    text-align: right;
+}
+
+.fish-market-recipe {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+}
+
+.fish-market-recipe .recipe-step {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #flowers-sidebar::-webkit-scrollbar { width: 8px; }
 #flowers-sidebar::-webkit-scrollbar-track { background: #f1f1f1; }
 body.dark-mode #flowers-sidebar::-webkit-scrollbar-track { background: #2a2a2a; }

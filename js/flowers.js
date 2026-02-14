@@ -2,6 +2,26 @@
 // FLOWERS - Flower calculations, recipes, and rendering
 // ============================================================================
 
+const FLOWER_URGENCY_LEVELS = {
+    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+};
+
+function getFlowerUrgency(stock) {
+    const percentage = (stock / 10) * 100;
+    const target = 10;
+    
+    if (stock < target * 0.25) return FLOWER_URGENCY_LEVELS.CRITICAL;
+    if (stock < target * 0.50) return FLOWER_URGENCY_LEVELS.VERY_HIGH;
+    if (stock < target * 0.75) return FLOWER_URGENCY_LEVELS.HIGH;
+    if (stock < target) return FLOWER_URGENCY_LEVELS.MEDIUM;
+    return FLOWER_URGENCY_LEVELS.GOOD;
+}
+
 function isSeedAvailableThisSeason(seedName, season) {
     const seedSeason = SEASONAL_SEEDS[seedName];
     if (!seedSeason) return true;
@@ -289,11 +309,12 @@ function renderFlowersList() {
         const recipe = FLOWER_DB.recipes[flower.name];
         if (!recipe) return;
         const seedTime = recipe.time || 0;
+        const urgency = getFlowerUrgency(flower.count);
         let flowerHtml = `
             <div class="flower-card">
                 <div class="flower-name">
                     <span>${emoji}${flower.name}</span>
-                    <span class="flower-stock">${flower.count}/10</span>
+                    <span class="flower-stock ${urgency.colorClass}">${flower.count}/10</span>
                 </div>
                 <div class="flower-info">
                     <span>${recipe.base_seed} : ${seedTime}d</span>

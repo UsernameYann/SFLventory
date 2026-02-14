@@ -58,8 +58,16 @@
     </main>
     <aside id="flowers-sidebar">
         <div class="right-tabs" role="tablist" aria-label="Right sidebar tabs">
-            <button class="right-tab active" role="tab" aria-selected="true" aria-controls="panel-flowers" data-tab="flowers" aria-label="Flowers">🌸</button>
+            <button class="right-tab active" role="tab" aria-selected="true" aria-controls="panel-vegetables" data-tab="vegetables" aria-label="Vegetables">🥕</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-fruits" data-tab="fruits" aria-label="Fruits">🍎</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-greenhouse" data-tab="greenhouse" aria-label="Greenhouse">🌾</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-flowers" data-tab="flowers" aria-label="Flowers">🌸</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-composters" data-tab="composters" aria-label="Composters">♻️</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-resources" data-tab="resources" aria-label="Resources">🪨</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-animals" data-tab="animals" aria-label="Animals">🐔</button>
             <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-fishing" data-tab="fishing" aria-label="Fishing">🎣</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-crustaceans" data-tab="crustaceans" aria-label="Crustaceans">🦞</button>
+            <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-fish-market" data-tab="fish-market" aria-label="Fish Market">🐠</button>
             <button class="right-tab" role="tab" aria-selected="false" aria-controls="panel-food" data-tab="food" aria-label="Food">🍳</button>
         </div>
         <div class="right-panels">
@@ -70,6 +78,38 @@
             <section id="panel-fishing" class="right-panel" role="tabpanel">
                 <h2>Low Stock Fish</h2>
                 <div id="fishing-list"></div>
+            </section>
+            <section id="panel-vegetables" class="right-panel" role="tabpanel">
+                <h2>Vegetables Production</h2>
+                <div id="vegetables-list"></div>
+            </section>
+            <section id="panel-fruits" class="right-panel" role="tabpanel">
+                <h2>Fruits Production</h2>
+                <div id="fruits-list"></div>
+            </section>
+            <section id="panel-greenhouse" class="right-panel" role="tabpanel">
+                <h2>Greenhouse Production</h2>
+                <div id="greenhouse-list"></div>
+            </section>
+            <section id="panel-resources" class="right-panel" role="tabpanel">
+                <h2>Resources Production</h2>
+                <div id="resources-list"></div>
+            </section>
+            <section id="panel-animals" class="right-panel" role="tabpanel">
+                <h2>Animals Production</h2>
+                <div id="animals-list"></div>
+            </section>
+            <section id="panel-composters" class="right-panel" role="tabpanel">
+                <h2>Composters Production</h2>
+                <div id="composters-list"></div>
+            </section>
+            <section id="panel-crustaceans" class="right-panel" role="tabpanel">
+                <h2>Low Stock Crustaceans</h2>
+                <div id="crustaceans-list"></div>
+            </section>
+            <section id="panel-fish-market" class="right-panel" role="tabpanel">
+                <h2>Fish Market</h2>
+                <div id="fish-market-list"></div>
             </section>
             <section id="panel-food" class="right-panel" role="tabpanel">
                 <h2>Cooking</h2>
@@ -85,6 +125,14 @@
     <script src="js/utils.js"></script>
     <script src="js/customPaths.js"></script>
     <script src="js/fishing.js"></script>
+    <script src="js/vegetables.js"></script>
+    <script src="js/fruits.js"></script>
+    <script src="js/greenhouse.js"></script>
+    <script src="js/resources.js"></script>
+    <script src="js/animals.js"></script>
+    <script src="js/composters.js"></script>
+    <script src="js/crustaceans.js"></script>
+    <script src="js/fishMarket.js"></script>
     <script src="js/food.js"></script>
     <script src="js/chart.js"></script>
     <script src="app.js"></script>
