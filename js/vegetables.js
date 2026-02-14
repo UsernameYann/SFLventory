@@ -4,19 +4,19 @@
 
 const VEGETABLES_BY_SEASON = {
     spring: [
-        "Sunflower", "Rhubarb", "Carrot", "Cabbage", "Soybean",
+        "Sunflower", "Potato", "Pumpkin", "Rhubarb", "Zucchini", "Carrot", "Cabbage", "Soybean",
         "Corn", "Wheat", "Kale", "Barley"
     ],
     summer: [
-        "Sunflower", "Potato", "Zucchini", "Pepper", "Beetroot",
+        "Sunflower", "Potato", "Pumpkin", "Rhubarb", "Zucchini", "Pepper", "Beetroot",
         "Cauliflower", "Eggplant", "Radish", "Wheat"
     ],
     autumn: [
-        "Potato", "Pumpkin", "Carrot", "Yam", "Broccoli",
+        "Sunflower", "Potato", "Pumpkin", "Rhubarb", "Zucchini", "Carrot", "Yam", "Broccoli",
         "Soybean", "Wheat", "Barley", "Artichoke"
     ],
     winter: [
-        "Potato", "Cabbage", "Beetroot", "Cauliflower", "Parsnip",
+        "Sunflower", "Potato", "Pumpkin", "Rhubarb", "Zucchini", "Cabbage", "Beetroot", "Cauliflower", "Parsnip",
         "Onion", "Turnip", "Wheat", "Kale"
     ]
 };

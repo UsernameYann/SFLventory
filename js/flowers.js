@@ -3,12 +3,12 @@
 // ============================================================================
 
 const FLOWER_URGENCY_LEVELS = {
-    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
-    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
-    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
-    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
-    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
-    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+    CRITICAL: { label: 'Critical', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'Very Urgent', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'Urgent', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'Medium', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'Low Priority', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'Good', colorClass: 'urgent-good', order: 5 }
 };
 
 function getFlowerUrgency(stock) {
@@ -303,8 +303,24 @@ function renderFlowersList() {
         container.innerHTML = '<p style="text-align: center; color: #999; font-size: 0.85rem; padding: 1rem 0;">✅ Toutes les fleurs >= 10</p>';
         return;
     }
+    
+    // Group by urgency
+    const grouped = {};
+    Object.values(FLOWER_URGENCY_LEVELS).forEach(level => {
+        if (level) {
+            grouped[level.label] = lowFlowers.filter(f => getFlowerUrgency(f.count).label === level.label);
+        }
+    });
+    
     let html = '';
-    lowFlowers.forEach(flower => {
+    Object.entries(FLOWER_URGENCY_LEVELS).forEach(([key, level]) => {
+        const items = grouped[level.label] || [];
+        if (items.length === 0) return;
+        
+        html += `<div class="flower-group">`;
+        html += `<h3>${level.label}</h3>`;
+        
+        items.forEach(flower => {
         const emoji = getSeasonEmoji(flower.name);
         const recipe = FLOWER_DB.recipes[flower.name];
         if (!recipe) return;
@@ -349,7 +365,11 @@ function renderFlowersList() {
             </div>
         `;
         html += flowerHtml;
-    });
+        }); // items.forEach
+        
+        html += `</div>`; // flower-group
+    }); // FLOWER_URGENCY_LEVELS.forEach
+    
     container.innerHTML = html;
 }
 

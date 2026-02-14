@@ -3,12 +3,12 @@
 // ============================================================================
 
 const CRUSTACEAN_URGENCY_LEVELS = {
-    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
-    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
-    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
-    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
-    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
-    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+    CRITICAL: { label: 'Critical', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'Very Urgent', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'Urgent', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'Medium', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'Low Priority', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'Good', colorClass: 'urgent-good', order: 5 }
 };
 
 function getCrustaceanUrgency(stock, minStock) {
@@ -71,41 +71,59 @@ function renderCrustaceansPanel() {
         return;
     }
 
-    let html = '';
-    lowCrustaceans.forEach(crustacean => {
-        const urgency = getCrustaceanUrgency(crustacean.count, crustacean.minStock);
-        let crustaceanHtml = `
-            <div class="crustacean-card">
-                <div class="crustacean-name">
-                    <span>${crustacean.name}</span>
-                    <span class="crustacean-stock ${urgency.colorClass}">${Math.floor(crustacean.count)}/${crustacean.minStock}</span>
-                </div>
-                <div class="crustacean-info">
-                    <span>${crustacean.pot}</span>
-                </div>
-                <div class="crustacean-recipe">
-        `;
-        
-        if (crustacean.ingredients && crustacean.ingredients.length > 0) {
-            for (let ingredient of crustacean.ingredients) {
-                // Parse "Item x quantity" format
-                const parts = ingredient.split(' x');
-                const ingredientName = parts[0];
-                const ingredientStock = parseInt(currentInventory?.[ingredientName] || 0);
-                const statusClass = ingredientStock > 0 ? 'recipe-status-good' : 'recipe-status-bad';
-                const statusText = ingredientStock > 0 ? '✓' : '⚠️';
-                crustaceanHtml += `<div class="recipe-step"><span class="recipe-base">${ingredient}</span><span class="${statusClass}">${statusText}</span></div>`;
-            }
-        } else {
-            crustaceanHtml += `<div class="recipe-step"><span class="recipe-base">No chum</span><span class="recipe-status-good">✓</span></div>`;
+    // Group by urgency
+    const grouped = {};
+    Object.values(CRUSTACEAN_URGENCY_LEVELS).forEach(level => {
+        if (level) {
+            grouped[level.label] = lowCrustaceans.filter(c => getCrustaceanUrgency(c.count, c.minStock).label === level.label);
         }
-        
-        crustaceanHtml += `
+    });
+
+    let html = '';
+    Object.entries(CRUSTACEAN_URGENCY_LEVELS).forEach(([key, level]) => {
+        const items = grouped[level.label] || [];
+        if (items.length === 0) return;
+
+        html += `<div class="crustacean-group">`;
+        html += `<h3>${level.label}</h3>`;
+
+        items.forEach(crustacean => {
+            const urgency = getCrustaceanUrgency(crustacean.count, crustacean.minStock);
+            let crustaceanHtml = `
+                <div class="crustacean-card">
+                    <div class="crustacean-name">
+                        <span>${crustacean.name}</span>
+                        <span class="crustacean-stock ${urgency.colorClass}">${Math.floor(crustacean.count)}/${crustacean.minStock}</span>
+                    </div>
+                    <div class="crustacean-info">
+                        <span>${crustacean.pot}</span>
+                    </div>
+                    <div class="crustacean-recipe">
+            `;
+            
+            if (crustacean.ingredients && crustacean.ingredients.length > 0) {
+                for (let ingredient of crustacean.ingredients) {
+                    // Parse "Item x quantity" format
+                    const parts = ingredient.split(' x');
+                    const ingredientName = parts[0];
+                    const ingredientStock = parseInt(currentInventory?.[ingredientName] || 0);
+                    const statusClass = ingredientStock > 0 ? 'recipe-status-good' : 'recipe-status-bad';
+                    const statusText = ingredientStock > 0 ? '✓' : '⚠️';
+                    crustaceanHtml += `<div class="recipe-step"><span class="recipe-base">${ingredient}</span><span class="${statusClass}">${statusText}</span></div>`;
+                }
+            } else {
+                crustaceanHtml += `<div class="recipe-step"><span class="recipe-base">No chum</span><span class="recipe-status-good">✓</span></div>`;
+            }
+            
+            crustaceanHtml += `
+                    </div>
                 </div>
-            </div>
-        `;
-        
-        html += crustaceanHtml;
+            `;
+            
+            html += crustaceanHtml;
+        });
+
+        html += `</div>`;
     });
 
     container.innerHTML = html;

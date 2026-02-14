@@ -13,6 +13,13 @@ const ANIMALS_URGENCY_LEVELS = {
     GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
 };
 
+function getAnimalLimit(animalName) {
+    if (animalName === 'Wool') return 500;
+    if (animalName === 'Merino Wool') return 1000;
+    if (animalName === 'Feather') return 1000;
+    return 0; // No custom limit for others (use rolling max)
+}
+
 function calculateAnimalStats(animalName, days = 30) {
     if (!data || typeof data !== 'object') return { current: 0, average: 0, max: 0, gap: 0 };
 
@@ -42,18 +49,14 @@ function calculateAnimalStats(animalName, days = 30) {
     };
 }
 
-function getAnimalUrgencyLevel(stats) {
-    const { current, average, max } = stats;
-
-    if (current < average) return ANIMALS_URGENCY_LEVELS.CRITICAL;
+function getAnimalUrgencyLevel(stats, limit) {
+    const { current } = stats;
+    const percentage = (current / limit) * 100;
     
-    const gap = max - average;
-    const percentToMax = gap > 0 ? ((current - average) / gap) * 100 : 100;
-
-    if (percentToMax < 25) return ANIMALS_URGENCY_LEVELS.VERY_HIGH;
-    if (percentToMax < 50) return ANIMALS_URGENCY_LEVELS.HIGH;
-    if (percentToMax < 75) return ANIMALS_URGENCY_LEVELS.MEDIUM;
-    if (percentToMax < 100) return ANIMALS_URGENCY_LEVELS.LOW;
+    if (current < limit * 0.25) return ANIMALS_URGENCY_LEVELS.CRITICAL;
+    if (current < limit * 0.50) return ANIMALS_URGENCY_LEVELS.VERY_HIGH;
+    if (current < limit * 0.75) return ANIMALS_URGENCY_LEVELS.HIGH;
+    if (current < limit) return ANIMALS_URGENCY_LEVELS.MEDIUM;
     return ANIMALS_URGENCY_LEVELS.GOOD;
 }
 
@@ -65,13 +68,19 @@ function renderAnimalsPanel() {
 
     ANIMALS_ITEMS.forEach(animalName => {
         const stats = calculateAnimalStats(animalName, 30);
-        const urgency = getAnimalUrgencyLevel(stats);
-        const gap = stats.max - stats.average;
+        const customLimit = getAnimalLimit(animalName);
+        
+        // Use custom limit if exists, otherwise use rolling max
+        const limit = customLimit > 0 ? customLimit : stats.max;
+        const urgency = getAnimalUrgencyLevel(stats, limit);
+        const gap = limit - stats.average;
         const percentToMax = gap > 0 ? ((stats.current - stats.average) / gap) * 100 : 100;
 
         animalsData.push({
             name: animalName,
-            ...stats,
+            current: stats.current,
+            average: stats.average,
+            max: limit,
             urgency: urgency,
             percentToMax: Math.max(0, percentToMax)
         });

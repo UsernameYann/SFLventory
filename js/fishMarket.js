@@ -3,12 +3,12 @@
 // ============================================================================
 
 const FISH_MARKET_URGENCY_LEVELS = {
-    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
-    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
-    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
-    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
-    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
-    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+    CRITICAL: { label: 'Critical', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'Very Urgent', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'Urgent', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'Medium', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'Low Priority', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'Good', colorClass: 'urgent-good', order: 5 }
 };
 
 function getFishMarketUrgency(stock, limit) {
@@ -179,31 +179,48 @@ function renderFishMarketPanel() {
         return;
     }
 
+    // Group by urgency
+    const grouped = {};
+    Object.values(FISH_MARKET_URGENCY_LEVELS).forEach(level => {
+        if (level) {
+            grouped[level.label] = lowStockProducts.filter(p => getFishMarketUrgency(p.stock, p.limit).label === level.label);
+        }
+    });
+
     let html = '';
+    Object.entries(FISH_MARKET_URGENCY_LEVELS).forEach(([key, level]) => {
+        const items = grouped[level.label] || [];
+        if (items.length === 0) return;
 
-    lowStockProducts.forEach(product => {
-        const urgency = getFishMarketUrgency(product.stock, product.limit);
-        let productHtml = `
-            <div class="fish-market-card">
-                <div class="fish-market-name">
-                    <span>${product.name}</span>
-                    <span class="fish-market-stock ${urgency.colorClass}">${Math.floor(product.stock)}/${product.limit}</span>
+        html += `<div class="fish-market-group">`;
+        html += `<h3>${level.label}</h3>`;
+
+        items.forEach(product => {
+            const urgency = getFishMarketUrgency(product.stock, product.limit);
+            let productHtml = `
+                <div class="fish-market-card">
+                    <div class="fish-market-name">
+                        <span>${product.name}</span>
+                        <span class="fish-market-stock ${urgency.colorClass}">${Math.floor(product.stock)}/${product.limit}</span>
+                    </div>
+                    <div class="fish-market-recipe">
+            `;
+
+            product.ingredients.forEach(ing => {
+                const statusClass = ing.available ? 'recipe-status-good' : 'recipe-status-bad';
+                const statusText = ing.available ? '✓' : '⚠️';
+                productHtml += `<div class="recipe-step"><span class="recipe-base">${ing.name}</span><span class="${statusClass}">${statusText}</span></div>`;
+            });
+
+            productHtml += `
+                    </div>
                 </div>
-                <div class="fish-market-recipe">
-        `;
+            `;
 
-        product.ingredients.forEach(ing => {
-            const statusClass = ing.available ? 'recipe-status-good' : 'recipe-status-bad';
-            const statusText = ing.available ? '✓' : '⚠️';
-            productHtml += `<div class="recipe-step"><span class="recipe-base">${ing.name}</span><span class="${statusClass}">${statusText}</span></div>`;
+            html += productHtml;
         });
 
-        productHtml += `
-                </div>
-            </div>
-        `;
-
-        html += productHtml;
+        html += `</div>`;
     });
 
     container.innerHTML = html;

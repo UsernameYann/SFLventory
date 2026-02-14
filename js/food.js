@@ -3,12 +3,12 @@
 // ============================================================================
 
 const FOOD_URGENCY_LEVELS = {
-    CRITICAL: { label: 'CRITICAL', colorClass: 'urgent-critical', order: 0 },
-    VERY_HIGH: { label: 'VERY_HIGH', colorClass: 'urgent-very-high', order: 1 },
-    HIGH: { label: 'HIGH', colorClass: 'urgent-high', order: 2 },
-    MEDIUM: { label: 'MEDIUM', colorClass: 'urgent-medium', order: 3 },
-    LOW: { label: 'LOW', colorClass: 'urgent-low', order: 4 },
-    GOOD: { label: 'GOOD', colorClass: 'urgent-good', order: 5 }
+    CRITICAL: { label: 'Critical', colorClass: 'urgent-critical', order: 0 },
+    VERY_HIGH: { label: 'Very Urgent', colorClass: 'urgent-very-high', order: 1 },
+    HIGH: { label: 'Urgent', colorClass: 'urgent-high', order: 2 },
+    MEDIUM: { label: 'Medium', colorClass: 'urgent-medium', order: 3 },
+    LOW: { label: 'Low Priority', colorClass: 'urgent-low', order: 4 },
+    GOOD: { label: 'Good', colorClass: 'urgent-good', order: 5 }
 };
 
 function getFoodUrgency(stock, limit) {
@@ -200,22 +200,33 @@ function renderFoodPanel() {
         return;
     }
 
-    let html = '';
+    // Group by urgency
+    const grouped = {};
+    Object.values(FOOD_URGENCY_LEVELS).forEach(level => {
+        if (level) {
+            grouped[level.label] = lowStockRecipes.filter(r => getFoodUrgency(r.stock, r.limit).label === level.label);
+        }
+    });
 
-    Object.entries(FOOD_BUILDINGS).forEach(([building, config]) => {
-        const buildingRecipes = lowStockRecipes.filter(r => r.building === building);
-        if (!buildingRecipes.length) return;
+    let html = '';
+    Object.entries(FOOD_URGENCY_LEVELS).forEach(([key, level]) => {
+        const items = grouped[level.label] || [];
+        if (items.length === 0) return;
 
         html += `<div class="food-group">`;
-        html += `<h3>${config.icon} ${building}</h3>`;
+        html += `<h3>${level.label}</h3>`;
 
-        buildingRecipes.forEach(recipe => {
+        items.forEach(recipe => {
+            const building = FOOD_BUILDINGS[recipe.building];
             const urgency = getFoodUrgency(recipe.stock, recipe.limit);
             let recipeHtml = `
                 <div class="food-card">
                     <div class="food-name">
                         <span>${recipe.name}</span>
                         <span class="food-stock ${urgency.colorClass}">${Math.floor(recipe.stock)}/${recipe.limit}</span>
+                    </div>
+                    <div class="food-info">
+                        <span>${building.icon} ${recipe.building}</span>
                     </div>
                     <div class="food-recipe">
             `;
